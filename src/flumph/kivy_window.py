@@ -30,3 +30,7 @@ class MainWindow(App):
     @staticmethod
     def move(*args):
         Window.left = Window.left + 30
+
+
+def start_kivy():
+    MainWindow().run()
