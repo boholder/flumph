@@ -3,7 +3,7 @@ name = "flumph"
 version = "0.0.1"
 description = ""
 authors = [
-    {name = "boholder",email = "bottleholder@anche.no"},
+    { name = "boholder", email = "bottleholder@anche.no" },
 ]
 dependencies = [
     "kivy[base,media]>=2.2.1",
@@ -11,5 +11,5 @@ dependencies = [
 ]
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
