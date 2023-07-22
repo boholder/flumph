@@ -6,8 +6,16 @@ authors = [
     { name = "boholder", email = "bottleholder@anche.no" },
 ]
 dependencies = [
+    # the GUI framework
     "kivy[base,media]>=2.2.1",
+    # the wsgi application that handles http requests
+    # https://flask.palletsprojects.com/en/2.3.x/
     "flask>=2.3.2",
+    # the wsgi server that enables flask
+    # https://flask.palletsprojects.com/en/latest/deploying/
+    "eventlet>=0.33.3",
+    # eventlet requires it (on Windows?)
+    "cryptography>=41.0.2",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

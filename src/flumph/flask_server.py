@@ -1,3 +1,5 @@
+import eventlet
+from eventlet import wsgi
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -13,4 +15,4 @@ def receive_text():
 
 def start_flask():
     print("Starting Flask server...")
-    app.run(port=1414)
+    wsgi.server(eventlet.listen(('', 1414)), app)

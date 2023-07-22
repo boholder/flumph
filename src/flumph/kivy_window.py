@@ -3,7 +3,7 @@ from kivy.clock import Clock
 
 from kivy.config import Config
 
-# 这行必须在下面这些import的前面执行才生效
+# TODO 这行必须在下面这些import的前面执行才生效，有办法解决吗
 Config.set('graphics', 'shaped', 1)
 
 from kivy.core.image import Image as CoreImage
