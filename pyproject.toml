@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     # the GUI framework
-    "kivy[base,media]>=2.2.1",
     # the wsgi application that handles http requests
     # https://flask.palletsprojects.com/en/2.3.x/
     "flask>=2.3.2",

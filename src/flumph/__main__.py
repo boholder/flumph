@@ -2,7 +2,7 @@ import signal
 from threading import Thread
 
 from flumph.flask_server import start_flask
-from flumph.kivy_window import start_kivy
+from flumph.main_window import start_main_window
 
 FLASK_THREAD = Thread(target=start_flask)
 FLASK_THREAD.daemon = True
@@ -22,7 +22,7 @@ def main():
     FLASK_THREAD.start()
 
     # keep kivy stay in main thread
-    start_kivy()
+    start_main_window()
 
 
 if __name__ == '__main__':
