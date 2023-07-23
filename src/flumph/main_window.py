@@ -18,6 +18,15 @@ class MainWindow(QMainWindow):
         timeout.connect(self.consume_outer_event)
         self.outer_event_timer.start(1000)
 
+        # # move the window
+        # t = QTimer(self)
+        # t.timeout.connect(self.auto_move)
+        # t.start(1000)
+
+    def auto_move(self):
+        geo = self.geometry()
+        self.setGeometry(geo.x() - 10, geo.y() - 10, geo.width(), geo.height())
+
     def paintEvent(self, event: QPaintEvent) -> None:
         backgnd = QPixmap()
         backgnd.load(self.background_image_path)
@@ -31,6 +40,7 @@ class MainWindow(QMainWindow):
     def consume_outer_event(self):
         if event := self.outer_event_handler.get():
             print(f'qt receive: {event}')
+            Dialog(self, event).show()
 
 
 class Dialog(QDialog):
