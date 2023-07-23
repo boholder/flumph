@@ -1,4 +1,5 @@
 import signal
+import sys
 from threading import Thread
 
 from flumph.flask_server import start_flask
@@ -9,7 +10,7 @@ FLASK_THREAD.daemon = True
 
 
 def signal_handler(signal, frame):
-    print(' CTRL + C detected, exiting ...')
+    print('CTRL + C detected, exiting ...')
     exit(1)
 
 
@@ -21,8 +22,8 @@ def main():
     # start flask in another thread
     FLASK_THREAD.start()
 
-    # keep kivy stay in main thread
-    start_main_window()
+    # keep gui stay in main thread
+    sys.exit(start_main_window())
 
 
 if __name__ == '__main__':
