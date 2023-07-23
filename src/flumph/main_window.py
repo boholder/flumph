@@ -1,6 +1,8 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QDialog, QLabel, QWidget
+
+from flumph.outer_event_handler import OuterEventHandler
 
 
 class MainWindow(QMainWindow):
@@ -8,6 +10,13 @@ class MainWindow(QMainWindow):
         super().__init__(parent, Qt.FramelessWindowHint | Qt.WindowSystemMenuHint)
         self.background_image_path = background_image_path
         self.setAttribute(Qt.WA_TranslucentBackground)
+
+        self.outer_event_handler = OuterEventHandler()
+
+        self.outer_event_timer = QTimer(self)
+        timeout: Signal = self.outer_event_timer.timeout
+        timeout.connect(self.consume_outer_event)
+        self.outer_event_timer.start(1000)
 
     def paintEvent(self, event: QPaintEvent) -> None:
         backgnd = QPixmap()
@@ -18,6 +27,10 @@ class MainWindow(QMainWindow):
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         Dialog(self, "haha").show()
+
+    def consume_outer_event(self):
+        if event := self.outer_event_handler.get():
+            print(f'qt receive: {event}')
 
 
 class Dialog(QDialog):
