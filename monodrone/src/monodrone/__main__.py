@@ -2,10 +2,16 @@ import signal
 import sys
 from threading import Thread
 
-from monodrone.flask_server import start_flask
+from duodrone import start_duodrone
 from monodrone.main_window import start_main_window
+from monodrone.outer_event_handler import OuterEventHandler
 
-FLASK_THREAD = Thread(target=start_flask)
+
+def config_and_start_duodrone():
+    start_duodrone(OuterEventHandler().handle)
+
+
+FLASK_THREAD = Thread(target=config_and_start_duodrone)
 FLASK_THREAD.daemon = True
 
 

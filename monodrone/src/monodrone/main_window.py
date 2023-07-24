@@ -82,7 +82,7 @@ class Dialog(QDialog):
 
 def start_main_window():
     app = QApplication([])
-    w = MainWindow(background_image_path=r'G:\code\python\flumph\data\test.png')
+    w = MainWindow(background_image_path=r'../../data/test.png')
     w.show()
     return app.exec()
 

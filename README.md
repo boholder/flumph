@@ -4,12 +4,13 @@
 
 这是原型。
 
-1. 不规则窗口
-2. 窗口位置移动
-3. 外部HTTP请求触发窗口变化（schedule 轮询Queue，生成GUI事件）
-4. 经典的客户端主动请求服务端通信问题，是怎样解决I/O bound的？ non-blocking IO
-5. 方便创建新的窗口
-
-把项目拆成纯展示和负责处理3，4的网络请求两部分，两者用Queue通信。
-
+```commandline
 curl -X POST -d "hi" http://127.0.0.1:1414/
+```
+
+响应Event(文字，情绪，音频) -> 三个不同的slot。
+
+把项目拆成纯展示和负责处理收发网络请求等两部分，两者不同线程用Queue通信。
+
+处理音频？
+https://github.com/jiaaro/pydub

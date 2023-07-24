@@ -2,6 +2,8 @@ import queue
 from enum import IntEnum
 from typing import Any
 
+from duodrone.data import OuterEvent
+
 
 class Priority(IntEnum):
     HIGH = 0,
@@ -27,3 +29,6 @@ class OuterEventHandler:
 
     def put(self, priority: int, event):
         self._queue.put((priority, event))
+
+    def handle(self, event: OuterEvent):
+        self.put(Priority.MIDDLE, event.text)
