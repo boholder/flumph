@@ -9,7 +9,7 @@ dependencies = [
     # official wrapper of Qt GUI framework
     "PySide6==6.5.1.1",
     # for comunication with other services through network
-    "duodrone>=0.0.1"
+    "duodrone"
 ]
 requires-python = ">=3.11,<3.12"
 readme = "README.md"

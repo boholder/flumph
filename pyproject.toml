@@ -1,5 +1,6 @@
 [project]
 name = "modron"
+version = "0.0.1"
 authors = [
     { name = "boholder", email = "bottleholder@anche.no" },
 ]
@@ -7,10 +8,14 @@ dependencies = []
 requires-python = ">=3.11,<3.12"
 readme = "README.md"
 license = { text = "MIT" }
+description = ""
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "-e pkg-core @ file:///${PROJECT_ROOT}/packages/pkg-core",
-    "-e pkg-first @ file:///${PROJECT_ROOT}/packages/pkg-first",
-    "-e pkg-second @ file:///${PROJECT_ROOT}/packages/pkg-second",
+    "-e file:///${PROJECT_ROOT}/duodrone#egg=duodrone",
+    "-e file:///${PROJECT_ROOT}/monodrone#egg=monodrone",
 ]
