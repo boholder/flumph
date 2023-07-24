@@ -2,7 +2,7 @@ import eventlet
 from eventlet import wsgi
 from flask import Flask, request, jsonify
 
-from flumph.outer_event_handler import OuterEventHandler, Priority
+from monodrone.outer_event_handler import OuterEventHandler, Priority
 
 app = Flask(__name__)
 app.debug = False

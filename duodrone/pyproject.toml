@@ -1,0 +1,27 @@
+[project]
+name = "duodrone"
+version = "0.0.1"
+description = "A package for duplex communication with LLM-oriented chatting services"
+authors = [
+    { name = "boholder", email = "bottleholder@anche.no" },
+]
+dependencies = [
+    # the wsgi application that handles http requests
+    # https://flask.palletsprojects.com/en/2.3.x/
+    "flask>=2.3.2",
+    # the wsgi server that enables flask
+    # https://flask.palletsprojects.com/en/latest/deploying/
+    "eventlet>=0.33.3",
+    # eventlet requires it (on Windows?)
+    "cryptography>=41.0.2",
+]
+requires-python = ">=3.11,<3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+[tool.pdm.build]
+excludes = ["./**/.git"]
+source-includes = [
+    "tests",
+    "README.md",
+]

@@ -1,0 +1,30 @@
+[project]
+name = "monodrone"
+version = "0.0.1"
+description = "A ukagaka-like desktop client for interacting with LLM-oriented chatting services"
+authors = [
+    { name = "boholder", email = "bottleholder@anche.no" },
+]
+dependencies = [
+    # official wrapper of Qt GUI framework
+    "PySide6==6.5.1.1",
+    # for comunication with other services through network
+    "duodrone>=0.0.1"
+]
+requires-python = ">=3.11,<3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+[tool.pdm.build]
+excludes = ["./**/.git"]
+source-includes = [
+    "tests",
+    "README.md",
+]
+
+# The key config for building executable wheel
+# https://github.com/pypa/pipx#where-does-pipx-install-apps-from
+# https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html#the-console-scripts-entry-point
+# https://pdm.fming.dev/latest/pyproject/pep621/#console-scripts
+[project.scripts]
+monodrone = "monodrone.__main__:main"

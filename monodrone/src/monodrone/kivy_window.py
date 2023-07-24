@@ -4,7 +4,7 @@
 # from kivy.uix.label import Label
 # from kivy.uix.popup import Popup
 #
-# from flumph.outer_event_handler import OuterEventHandler
+# from monodrone.outer_event_handler import OuterEventHandler
 #
 # # TODO 这行必须在下面这些import的前面执行才生效，有办法解决吗
 # Config.set('graphics', 'shaped', 1)

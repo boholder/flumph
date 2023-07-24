@@ -3,7 +3,7 @@ from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QDialog, QLabel, QWidget
 
-from flumph.outer_event_handler import OuterEventHandler
+from monodrone.outer_event_handler import OuterEventHandler
 
 
 class MainWindow(QMainWindow):
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
     def mousePressEvent(self, event: QMouseEvent) -> None:
         # Dialog(self, "haha").show()
         request = QNetworkRequest(QUrl('http://localhost:1415'))
-        self.network_manager.post(request, 'from flumph: hi!'.encode('utf-8'))
+        self.network_manager.post(request, 'from monodrone: hi!'.encode('utf-8'))
         self.network_manager.finished.connect(self.handle_slow_server_response)
 
     def handle_network_reply(self, reply: QNetworkReply):

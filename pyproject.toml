@@ -1,39 +1,16 @@
 [project]
-name = "flumph"
-version = "0.0.1"
-description = ""
+name = "modron"
 authors = [
     { name = "boholder", email = "bottleholder@anche.no" },
 ]
-dependencies = [
-    # the GUI framework
-    "PySide6==6.5.1.1",
-    # the wsgi application that handles http requests
-    # https://flask.palletsprojects.com/en/2.3.x/
-    "flask>=2.3.2",
-    # the wsgi server that enables flask
-    # https://flask.palletsprojects.com/en/latest/deploying/
-    "eventlet>=0.33.3",
-    # eventlet requires it (on Windows?)
-    "cryptography>=41.0.2",
-]
+dependencies = []
 requires-python = ">=3.11,<3.12"
 readme = "README.md"
 license = { text = "MIT" }
 
-[tool.pdm.build]
-excludes = ["./**/.git"]
-source-includes = [
-    "tests",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md",
-    "CONTRIBUTING.md"
+[tool.pdm.dev-dependencies]
+dev = [
+    "-e pkg-core @ file:///${PROJECT_ROOT}/packages/pkg-core",
+    "-e pkg-first @ file:///${PROJECT_ROOT}/packages/pkg-first",
+    "-e pkg-second @ file:///${PROJECT_ROOT}/packages/pkg-second",
 ]
-
-# The key config for building executable wheel
-# https://github.com/pypa/pipx#where-does-pipx-install-apps-from
-# https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html#the-console-scripts-entry-point
-# https://pdm.fming.dev/latest/pyproject/pep621/#console-scripts
-[project.scripts]
-flumph = "flumph.__main__:main"

@@ -2,8 +2,8 @@ import signal
 import sys
 from threading import Thread
 
-from flumph.flask_server import start_flask
-from flumph.main_window import start_main_window
+from monodrone.flask_server import start_flask
+from monodrone.main_window import start_main_window
 
 FLASK_THREAD = Thread(target=start_flask)
 FLASK_THREAD.daemon = True
