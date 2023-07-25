@@ -16,7 +16,6 @@ class MainWindow(QMainWindow):
         self.outer_event_handler = OuterEventHandler()
 
         self.outer_event_timer = QTimer(self)
-        a: Signal = self.outer_event_timer.timeout
         self.outer_event_timer.timeout.connect(self.consume_outer_event)
         self.outer_event_timer.start(1000)
 
