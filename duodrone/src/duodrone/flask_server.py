@@ -2,11 +2,13 @@ import eventlet
 from eventlet import wsgi
 from flask import Flask, request, jsonify
 
-from duodrone import config
+from duodrone.config import DuoDroneConfig
 from duodrone.data import OuterEvent
 
 app = Flask(__name__)
 app.debug = False
+
+config = DuoDroneConfig()
 
 
 @app.route('/', methods=['POST'])

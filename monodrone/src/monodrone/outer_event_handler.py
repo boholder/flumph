@@ -12,23 +12,23 @@ class Priority(IntEnum):
 
 
 class OuterEventHandler:
-    instance: 'OuterEventHandler' = None
-    _queue = queue.PriorityQueue()
+    __instance: 'OuterEventHandler' = None
+    __queue = queue.PriorityQueue()
 
     def __new__(cls):
-        if cls.instance is None:
-            cls.instance = super(OuterEventHandler, cls).__new__(cls)
-        return cls.instance
+        if cls.__instance is None:
+            cls.__instance = super(OuterEventHandler, cls).__new__(cls)
+        return cls.__instance
 
     def get(self) -> Any | None:
         try:
-            t = self._queue.get(block=False)
+            t = self.__queue.get(block=False)
             return t[1]
         except queue.Empty:
             return None
 
     def put(self, priority: int, event):
-        self._queue.put((priority, event))
+        self.__queue.put((priority, event))
 
     def handle(self, event: OuterEvent):
         self.put(Priority.MIDDLE, event.text)

@@ -2,13 +2,16 @@ import signal
 import sys
 from threading import Thread
 
+import duodrone
 from duodrone import start_duodrone
 from monodrone.main_window import start_main_window
 from monodrone.outer_event_handler import OuterEventHandler
 
 
 def config_and_start_duodrone():
-    start_duodrone(OuterEventHandler().handle)
+    duodrone.config.outer_request_callback = OuterEventHandler().handle
+
+    start_duodrone()
 
 
 FLASK_THREAD = Thread(target=config_and_start_duodrone)
