@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
+from PySide6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 from PySide6.QtNetwork import QNetworkReply
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 
@@ -23,6 +24,7 @@ class MainWindow(QMainWindow):
         # move the window
         self.moving_counter = 0
         self.moving_flag = False
+
         # t = QTimer(self)
         # t.timeout.connect(self.auto_move)
         # t.start(100)
@@ -49,6 +51,21 @@ class MainWindow(QMainWindow):
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         DialogBubble(self, "haha").show()
+
+    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        device = QMediaDevices.defaultAudioOutput()
+        audio_output = QAudioOutput(device, self)
+
+        # player本身还有很多异常处理，参考示例
+        # player可以方便
+        # https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html#PySide6.QtMultimedia.PySide6.QtMultimedia.QMediaPlayer
+        # https://doc.qt.io/qtforpython-6/examples/example_multimedia_player.html
+        player = QMediaPlayer()
+        player.setAudioOutput(audio_output)
+
+        # https://stackoverflow.com/questions/42168280/qmediaplayer-play-a-sound-loaded-into-memory
+        player.setSource(r'../../data/audio.wav')
+        player.play()
 
     def handle_network_reply(self, reply: QNetworkReply):
         reply.deleteLater()
