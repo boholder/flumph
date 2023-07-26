@@ -19,6 +19,8 @@ curl -X POST -d "hi" http://127.0.0.1:1414/
 https://github.com/jiaaro/pydub
 https://doc.qt.io/qt-6/audiooverview.html
 
+client的主动请求收发，如何与flask共处？（再加一个线程？）
+ui，client，server三者的数据流动是怎样的？
 
 先把文字部分实现齐全再想真正实现多媒体的事
 
