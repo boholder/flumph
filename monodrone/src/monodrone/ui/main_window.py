@@ -53,16 +53,20 @@ class MainWindow(QMainWindow):
         DialogBubble(self, "haha").show()
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        # self.play_audio()
+        # TODO 两图标渐变
+        # https://stackoverflow.com/questions/48472703/how-do-i-make-a-gradient-opacity-in-an-image
+        pass
+
+    def play_audio(self):
         device = QMediaDevices.defaultAudioOutput()
         audio_output = QAudioOutput(device, self)
-
         # player本身还有很多异常处理，参考示例
         # player可以方便
         # https://doc.qt.io/qtforpython-6/PySide6/QtMultimedia/QMediaPlayer.html#PySide6.QtMultimedia.PySide6.QtMultimedia.QMediaPlayer
         # https://doc.qt.io/qtforpython-6/examples/example_multimedia_player.html
         player = QMediaPlayer()
         player.setAudioOutput(audio_output)
-
         # https://stackoverflow.com/questions/42168280/qmediaplayer-play-a-sound-loaded-into-memory
         player.setSource(r'../../data/audio.wav')
         player.play()

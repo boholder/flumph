@@ -12,7 +12,7 @@ curl -X POST -d "hi" http://127.0.0.1:1414/
 响应Event(文字，情绪，音频) -> 三个不同的slot。
 文字：弹窗
 情绪：变换立绘
-变换立绘-》先了解Qt组件的生命周期
+变换立绘-》重新paint，先了解Qt组件的生命周期
 音频：播放音频
 处理音频？
 https://github.com/jiaaro/pydub
