@@ -50,9 +50,7 @@ class MainWindow(QMainWindow):
         painter.fillRect(0, 0, self.width(), self.height(), QBrush(backgnd))
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
-        DialogBubble(self, "haha").show()
-
-    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        # DialogBubble(self, "haha").show()
         # self.play_audio()
         # TODO 两图标渐变
         # https://stackoverflow.com/questions/48472703/how-do-i-make-a-gradient-opacity-in-an-image
