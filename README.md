@@ -28,6 +28,12 @@ https://github.com/openai/openai-python#async-api
 之后可替换成 `httpx[http2]`
 https://www.python-httpx.org/http2/
 
+如何实现quart和主动请求的兼容：
+用一个后台任务来跑监听并发送QT界面放入Queue的主动请求，收到请求放入响应Queue。
+https://stackoverflow.com/questions/70075859/scheduling-periodic-function-call-in-quart-asyncio
+https://pgjones.gitlab.io/quart/how_to_guides/startup_shutdown.html
+https://pgjones.gitlab.io/quart/how_to_guides/background_tasks.html
+
 ui，client，server三者的数据流动是怎样的？
 
 转正式开发：
