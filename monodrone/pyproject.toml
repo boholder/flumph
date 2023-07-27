@@ -7,7 +7,7 @@ authors = [
 ]
 dependencies = [
     # official wrapper of Qt GUI framework
-    "PySide6==6.5.1.1",
+    "PySide6>=6.5.2",
     # for comunication with other services through network
     "duodrone"
 ]

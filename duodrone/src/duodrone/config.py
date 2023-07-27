@@ -1,5 +1,7 @@
 from typing import Callable
 
+from hypercorn.config import Config as HyperCornConfig
+
 from duodrone.data import OuterEvent
 
 
@@ -11,4 +13,9 @@ class DuoDroneConfig:
             cls.__instance = super(DuoDroneConfig, cls).__new__(cls)
         return cls.__instance
 
-    outer_request_callback: Callable[[OuterEvent], None] = lambda resp: print(f'Dummy get outer response: {resp}')
+    outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: print(f'Dummy get outer response: {resp}')
+    hypercorn_config = HyperCornConfig()
+
+    def __init__(self):
+        self.hypercorn_config.bind = 'localhost:1414'
+        self.hypercorn_config.accesslog = '-'
