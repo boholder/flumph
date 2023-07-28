@@ -38,7 +38,7 @@ def main():
 
     # start http service in another thread
     task = asyncio.run_coroutine_threadsafe(get_duodrone_coroutine(), ASYNCIO_EVENT_LOOP)
-
+    task.result()
     # keep gui stay in main thread
     sys.exit(start_main_window())
 
