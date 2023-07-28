@@ -7,17 +7,19 @@ from duodrone.data import OuterEvent
 
 class DuoDroneConfig:
     """
-    Various configurations for duodrone.
-
-    :param outer_event_handler: Handler for outer events
-    :param hypercorn_config: Hypercorn configuration
-    :param hypercorn_shutdown_trigger: Shutdown trigger
+    Configurations for duodrone module.
     """
 
     __instance: 'DuoDroneConfig' = None
+
     outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: print(f'Dummy get outer response: {resp}')
+    """outer event handler"""
+
     hypercorn_config = HyperCornConfig()
+    """hypercorn config"""
+
     hypercorn_shutdown_trigger: Optional[Callable[..., Awaitable[None]]] = None
+    """hypercorn shutdown trigger"""
 
     def __new__(cls):
         if cls.__instance is None:
@@ -25,5 +27,6 @@ class DuoDroneConfig:
         return cls.__instance
 
     def __init__(self):
+        # default configs
         self.hypercorn_config.bind = 'localhost:1414'
         self.hypercorn_config.accesslog = '-'
