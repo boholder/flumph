@@ -11,6 +11,7 @@ dependencies = [
     # the wsgi server that serves wsgi application
     "hypercorn>=0.14.4",
     "openai>=0.27.8",
+    "loguru>=0.7.0",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

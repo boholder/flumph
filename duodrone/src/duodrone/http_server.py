@@ -28,9 +28,9 @@ async def check_shutdown_trigger_in_non_main_thread():
         raise NotImplementedError('''shutdown_trigger must be set if you run the hypercorn in a non-main thread.
 Or the http server won't started properly. A typical way to do this (in the main thread):
 
-# not the threading.Event!        
+# please notice that it's not the threading.Event!
 event = asyncio.Event()
-        
+
 def signal_handler(_, __):
     event.set()
 
