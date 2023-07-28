@@ -5,7 +5,7 @@
 这是原型。
 
 ```commandline
-curl -X POST -d "hi" http://127.0.0.1:1414/
+curl -d "hi" http://127.0.0.1:1414/
 ```
 
 

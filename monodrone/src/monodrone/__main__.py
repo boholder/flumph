@@ -20,25 +20,30 @@ ASYNCIO_THREAD = Thread(target=start_background_loop, args=(ASYNCIO_EVENT_LOOP,)
                         name="DUODRONE_ASYNCIO_THREAD")
 ASYNCIO_THREAD.start()
 
+SIGNAL_EVENT = asyncio.Event()
+
 
 def signal_handler(_, __):
-    print('CTRL + C detected, exiting ...')
+    print('Signal received, exiting...')
+    SIGNAL_EVENT.set()
     exit(1)
 
 
 def get_duodrone_coroutine():
     duodrone_config.outer_event_handler = OuterEventHandler().handle
+    duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait
     return duodrone.get_duodrone_coroutine()
 
 
 def main():
-    # CTRL+C signal handler
+    # signal handling
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGBREAK, signal_handler)
 
     # start http service in another thread
-    task = asyncio.run_coroutine_threadsafe(get_duodrone_coroutine(), ASYNCIO_EVENT_LOOP)
-    task.result()
+    asyncio.run_coroutine_threadsafe(get_duodrone_coroutine(), ASYNCIO_EVENT_LOOP)
+
     # keep gui stay in main thread
     sys.exit(start_main_window())
 
