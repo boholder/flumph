@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Optional, Awaitable
 
 from hypercorn.config import Config as HyperCornConfig
 
@@ -15,6 +15,7 @@ class DuoDroneConfig:
 
     outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: print(f'Dummy get outer response: {resp}')
     hypercorn_config = HyperCornConfig()
+    hypercorn_shutdown_trigger: Optional[Callable[..., Awaitable[None]]] = None
 
     def __init__(self):
         self.hypercorn_config.bind = 'localhost:1414'

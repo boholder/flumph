@@ -21,7 +21,8 @@ async def receive_text():
 
 
 def get_server_coroutine():
-    return hypercorn_asyncio_serve(app, duodrone_config.hypercorn_config)
+    return hypercorn_asyncio_serve(app, duodrone_config.hypercorn_config,
+                                   shutdown_trigger=duodrone_config.hypercorn_shutdown_trigger)
 
 
 if __name__ == '__main__':
