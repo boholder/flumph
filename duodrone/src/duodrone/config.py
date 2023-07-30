@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import sys
 from collections import namedtuple
@@ -17,11 +18,13 @@ class DuodroneLoggingConfig:
     Or you can config your own loguru loggers:
     https://loguru.readthedocs.io/en/stable/api/logger.html#loguru._logger.Logger.add
     """
+
     format: str = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
                    "<level>{level: <5}</level> | "
                    "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
                    "<level>{message}</level>")
-    """source: https://github.com/Delgan/loguru/issues/586#issuecomment-1030819250"""
+    """Source: https://github.com/Delgan/loguru/issues/586#issuecomment-1030819250"""
+
     level: str = "WARNING"
     """Control duodrone and its dependencies log level"""
 
@@ -58,7 +61,8 @@ class DuodroneConfig:
 
     debug: bool = False
 
-    logger: DuodroneLoggingConfig = DuodroneLoggingConfig()
+    logger_config: DuodroneLoggingConfig = DuodroneLoggingConfig()
+    """duodrone uses loguru library for logging: https://loguru.readthedocs.io"""
 
     outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: logger.info(f'Dummy get outer response: {resp}')
     """outer event handler"""
@@ -68,6 +72,8 @@ class DuodroneConfig:
 
     hypercorn_shutdown_trigger: Optional[Callable[..., Awaitable[None]]] = None
     """hypercorn shutdown trigger"""
+
+    event_loop: asyncio.AbstractEventLoop = None
 
     def __new__(cls):
         if cls.__instance is None:
@@ -81,7 +87,13 @@ class DuodroneConfig:
         self.hypercorn_config.bind = 'localhost:1511'
 
     def config_behaviors(self):
+        self.check_required_configs()
         self.config_logging()
+
+    def check_required_configs(self):
+        for cfg, name in [(self.event_loop, 'event_loop')]:
+            if cfg is None:
+                raise ValueError(f'Config `duodrone.{name}` must be set.')
 
     def config_logging(self):
         # remove default logging sink (stderr)
@@ -90,9 +102,9 @@ class DuodroneConfig:
         # add loguru intercept handler to dependencies' loggers
         logging.basicConfig(handlers=[LoguruInterceptHandler()], level=0, force=True)
 
-        if self.logger.use_default_loggers:
-            logger_format = self.logger.format
-            log_level = self.logger.level
+        if self.logger_config.use_default_loggers:
+            logger_format = self.logger_config.format
+            log_level = self.logger_config.level
 
             # https://clig.dev/#the-basics
             # access logs (logger.bind(a=True).info(...)) to stdout

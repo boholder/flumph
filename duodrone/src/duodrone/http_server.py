@@ -11,7 +11,8 @@ from duodrone import config
 from duodrone.config import DuodroneConfig
 from duodrone.data import OuterEvent
 
-SHUTDOWN_TRIGGER_ADVICE = '''Config hypercorn_shutdown_trigger must be set if you run the hypercorn in a non-main thread, or the http server won't start. A typical way to do this (in the main thread):
+SHUTDOWN_TRIGGER_ADVICE = '''Config `hypercorn_shutdown_trigger` must be set if you run the hypercorn in a non-main thread, or the http server won't start.
+A typical way to do this (in the main thread):
 
 loop = asyncio.new_event_loop()
 t = Thread(target=start_background_loop, args=(loop,), daemon=True)
@@ -60,12 +61,10 @@ app = Quart(__name__)
 
 @app.before_serving
 async def remove_dependencies_log_handlers():
-    # remove default quart log handlers
     # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
     getLogger('quart.app').removeHandler(default_handler)
     getLogger('quart.serving').removeHandler(default_handler)
 
-    # remove default hypercorn log handlers
     # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
     # with reading the code of hypercorn.logging._create_logger
     for _logger in (getLogger('hypercorn.access'), getLogger('hypercorn.error')):
@@ -86,8 +85,8 @@ def check_shutdown_trigger_in_non_main_thread():
     not_in_main_thread = threading.current_thread().__class__.__name__ != '_MainThread'
     trigger_is_none = duodrone_config.hypercorn_shutdown_trigger is None
     if not_in_main_thread and trigger_is_none:
-        logger.error('Config hypercorn_shutdown_trigger is None while in non-main thread.')
-        raise NotImplementedError(SHUTDOWN_TRIGGER_ADVICE)
+        logger.error('Config `hypercorn_shutdown_trigger` is None while in non-main thread.')
+        raise ValueError(SHUTDOWN_TRIGGER_ADVICE)
 
 
 @logger.catch

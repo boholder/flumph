@@ -18,7 +18,7 @@ def start_background_loop(loop: asyncio.AbstractEventLoop) -> None:
 
 
 ASYNCIO_EVENT_LOOP = asyncio.new_event_loop()
-ASYNCIO_EVENT_LOOP.set_debug(True)
+# ASYNCIO_EVENT_LOOP.set_debug(True)
 ASYNCIO_THREAD = Thread(target=start_background_loop, args=(ASYNCIO_EVENT_LOOP,), daemon=True,
                         name="DUODRONE_ASYNCIO_THREAD")
 ASYNCIO_THREAD.start()
@@ -47,14 +47,15 @@ def signal_handler(_, __):
     exit(1)
 
 
-def get_duodrone_coroutine():
+def config_duodrone():
     duodrone_config.debug = True
-    duodrone_config.logger.level = 'DEBUG'
+    duodrone_config.logger_config.level = 'DEBUG'
     duodrone_config.outer_event_handler = OuterEventHandler().handle
     duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait
-    return duodrone.get_duodrone_coroutine()
+    duodrone_config.event_loop = ASYNCIO_EVENT_LOOP
 
 
+@logger.catch
 def main():
     # signal handling
     signal.signal(signal.SIGINT, signal_handler)
@@ -62,7 +63,8 @@ def main():
     signal.signal(signal.SIGBREAK, signal_handler)
 
     # start http service in another thread
-    asyncio.run_coroutine_threadsafe(get_duodrone_coroutine(), ASYNCIO_EVENT_LOOP)
+    config_duodrone()
+    asyncio.run_coroutine_threadsafe(duodrone.get_duodrone_coroutine(), ASYNCIO_EVENT_LOOP)
 
     # keep gui stay in main thread
     sys.exit(start_main_window())

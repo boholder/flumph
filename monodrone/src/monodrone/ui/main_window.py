@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QCoreApplication
 from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
 from PySide6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 from PySide6.QtNetwork import QNetworkReply
@@ -7,6 +7,10 @@ from loguru import logger
 
 from monodrone.interface.outer_event_handler import OuterEventHandler
 from monodrone.ui.dialog_bubble import DialogBubble
+
+# for simplifying some qt instances' initializing
+QCoreApplication.setOrganizationName("boholder")
+QCoreApplication.setApplicationName("monodrone")
 
 
 class MainWindow(QMainWindow):
