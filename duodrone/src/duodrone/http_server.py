@@ -57,8 +57,7 @@ for logger in (getLogger('hypercorn.access'), getLogger('hypercorn.error')):
 @app.route('/', methods=['POST'])
 async def receive_text():
     text = await request.get_data(as_text=True)
-    print(f'from http: {text}')
-    app.logger.debug("quart logger debug")
+    logger.info(f'from http: {text}')
     duodrone_config.outer_event_handler(OuterEvent(text))
     return jsonify(success=True)
 

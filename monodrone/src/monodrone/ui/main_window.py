@@ -3,6 +3,7 @@ from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
 from PySide6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
 from PySide6.QtNetwork import QNetworkReply
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+from loguru import logger
 
 from monodrone.interface.outer_event_handler import OuterEventHandler
 from monodrone.ui.dialog_bubble import DialogBubble
@@ -78,7 +79,7 @@ class MainWindow(QMainWindow):
 
     def consume_outer_event(self):
         if event := self.outer_event_handler.get():
-            print(f'qt receive: {event}')
+            logger.info(f'qt receive: {event}')
             DialogBubble(self, event).show()
 
 

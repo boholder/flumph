@@ -3,6 +3,8 @@ import signal
 import sys
 from threading import Thread
 
+from loguru import logger
+
 import duodrone
 from duodrone import config as duodrone_config
 from monodrone.interface.outer_event_handler import OuterEventHandler
@@ -24,7 +26,7 @@ SIGNAL_EVENT = asyncio.Event()
 
 
 def signal_handler(_, __):
-    print('Signal received, exiting...')
+    logger.bind(o=True).info('Signal received, exiting...')
     SIGNAL_EVENT.set()
     exit(1)
 

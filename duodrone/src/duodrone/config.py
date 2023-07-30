@@ -55,7 +55,7 @@ class DuodroneConfig:
 
     logger: DuodroneLoggingConfig = DuodroneLoggingConfig()
 
-    outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: print(f'Dummy get outer response: {resp}')
+    outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: logger.info(f'Dummy get outer response: {resp}')
     """outer event handler"""
 
     hypercorn_config = HyperCornConfig()
