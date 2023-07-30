@@ -2,7 +2,6 @@ import asyncio
 import threading
 from logging import getLogger
 
-import hypercorn
 from hypercorn.asyncio import serve as hypercorn_asyncio_serve
 from loguru import logger
 from quart import Quart, request, jsonify
