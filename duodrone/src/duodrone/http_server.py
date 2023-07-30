@@ -67,7 +67,7 @@ async def remove_dependencies_log_handlers():
 
     # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
     # with reading the code of hypercorn.logging._create_logger
-    for _logger in (getLogger('hypercorn.access'), getLogger('hypercorn.error')):
+    for _logger in {getLogger('hypercorn.access'), getLogger('hypercorn.error')}:
         for handler in _logger.handlers:
             if not isinstance(handler, config.LoguruInterceptHandler):
                 _logger.removeHandler(handler)

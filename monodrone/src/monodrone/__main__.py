@@ -58,9 +58,8 @@ def config_duodrone():
 @logger.catch
 def main():
     # signal handling
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-    signal.signal(signal.SIGBREAK, signal_handler)
+    for sig in {signal.SIGINT, signal.SIGTERM, signal.SIGBREAK}:
+        signal.signal(sig, signal_handler)
 
     # start http service in another thread
     config_duodrone()

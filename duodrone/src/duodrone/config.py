@@ -91,7 +91,7 @@ class DuodroneConfig:
         self.config_logging()
 
     def check_required_configs(self):
-        for cfg, name in [(self.event_loop, 'event_loop')]:
+        for cfg, name in {(self.event_loop, 'event_loop')}:
             if cfg is None:
                 raise ValueError(f'Config `duodrone.{name}` must be set.')
 
