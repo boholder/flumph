@@ -13,12 +13,17 @@ LoggingConfig = namedtuple('LoggingFormat', ['format', 'level'])
 
 class DuodroneLoggingConfig:
     use_default_loggers: bool = True
-    format: str = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | " \
-                   "<level>{level: <5}</level> | " \
-                   "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | " \
+    """
+    Or you can config your own loguru loggers:
+    https://loguru.readthedocs.io/en/stable/api/logger.html#loguru._logger.Logger.add
+    """
+    format: str = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                   "<level>{level: <5}</level> | "
+                   "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
                    "<level>{message}</level>")
     """source: https://github.com/Delgan/loguru/issues/586#issuecomment-1030819250"""
-    level: str = "INFO"
+    level: str = "WARN"
+    """Control duodrone and its dependencies log level"""
 
 
 class LoguruInterceptHandler(logging.Handler):
