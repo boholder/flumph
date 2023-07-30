@@ -1,6 +1,7 @@
 import asyncio
 import signal
 import sys
+import time
 from threading import Thread
 
 from loguru import logger
@@ -25,9 +26,24 @@ ASYNCIO_THREAD.start()
 SIGNAL_EVENT = asyncio.Event()
 
 
+async def stop_async_http_server():
+    SIGNAL_EVENT.set()
+    ASYNCIO_EVENT_LOOP.call_soon(ASYNCIO_EVENT_LOOP.stop)
+
+
 def signal_handler(_, __):
     logger.bind(o=True).info('Signal received, exiting...')
-    SIGNAL_EVENT.set()
+    asyncio.run_coroutine_threadsafe(stop_async_http_server(), ASYNCIO_EVENT_LOOP)
+
+    # waiting for event loop closing
+    while True:
+        if not ASYNCIO_EVENT_LOOP.is_running():
+            logger.bind(o=True).info('Async http server closed.')
+            break
+        time.sleep(0.1)
+
+    # then exit this main thread, with daemon async thread
+    logger.bind(o=True).info('Main thread closed.')
     exit(1)
 
 
