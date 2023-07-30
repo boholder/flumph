@@ -22,7 +22,7 @@ class DuodroneLoggingConfig:
                    "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
                    "<level>{message}</level>")
     """source: https://github.com/Delgan/loguru/issues/586#issuecomment-1030819250"""
-    level: str = "WARN"
+    level: str = "WARNING"
     """Control duodrone and its dependencies log level"""
 
 
@@ -96,6 +96,6 @@ class DuodroneConfig:
 
             # https://clig.dev/#the-basics
             # access logs (logger.bind(a=True).info(...)) to stdout
-            logger.add(sys.stdout, filter=lambda record: "a" in record["extra"], format=logger_format, level=log_level, enqueue=True)
+            logger.add(sys.stdout, filter=lambda record: "o" in record["extra"], format=logger_format, level=log_level, enqueue=True)
             # other logs to stderr
-            logger.add(sys.stderr, filter=lambda record: "a" not in record["extra"], format=logger_format, level=log_level, enqueue=True)
+            logger.add(sys.stderr, filter=lambda record: "o" not in record["extra"], format=logger_format, level=log_level, enqueue=True)

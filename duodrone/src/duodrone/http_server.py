@@ -7,6 +7,7 @@ from loguru import logger
 from quart import Quart, request, jsonify
 from quart.logging import default_handler
 
+from duodrone import config
 from duodrone.config import DuodroneConfig
 from duodrone.data import OuterEvent
 
@@ -56,15 +57,21 @@ duodrone_config = DuodroneConfig()
 
 app = Quart(__name__)
 
-# remove default logger handlers
-# https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
-getLogger('quart.app').removeHandler(default_handler)
-getLogger('quart.serving').removeHandler(default_handler)
 
-# read the code of hypercorn.logging._create_logger
-for _logger in (getLogger('hypercorn.access'), getLogger('hypercorn.error')):
-    for handler in _logger.handlers:
-        _logger.removeHandler(handler)
+@app.before_serving
+async def remove_dependencies_log_handlers():
+    # remove default quart log handlers
+    # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
+    getLogger('quart.app').removeHandler(default_handler)
+    getLogger('quart.serving').removeHandler(default_handler)
+
+    # remove default hypercorn log handlers
+    # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
+    # with reading the code of hypercorn.logging._create_logger
+    for _logger in (getLogger('hypercorn.access'), getLogger('hypercorn.error')):
+        for handler in _logger.handlers:
+            if not isinstance(handler, config.LoguruInterceptHandler):
+                _logger.removeHandler(handler)
 
 
 @app.route('/', methods=['POST'])
@@ -79,11 +86,11 @@ def check_shutdown_trigger_in_non_main_thread():
     not_in_main_thread = threading.current_thread().__class__.__name__ != '_MainThread'
     trigger_is_none = duodrone_config.hypercorn_shutdown_trigger is None
     if not_in_main_thread and trigger_is_none:
-        logger.error('Config hypercorn_shutdown_trigger must be set if you run the hypercorn in a non-main thread.')
-        logger.bind(o=True).error(SHUTDOWN_TRIGGER_ADVICE)
-        raise NotImplementedError()
+        logger.error('Config hypercorn_shutdown_trigger is None while in non-main thread.')
+        raise NotImplementedError(SHUTDOWN_TRIGGER_ADVICE)
 
 
+@logger.catch
 async def get_server_coroutine():
     if duodrone_config.debug:
         app.debug = True
