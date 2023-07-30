@@ -33,8 +33,7 @@ def get_duodrone_coroutine():
     duodrone_config.debug = True
     duodrone_config.logger.level = 'DEBUG'
     duodrone_config.outer_event_handler = OuterEventHandler().handle
-    duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait()
-
+    duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait
     return duodrone.get_duodrone_coroutine()
 
 
