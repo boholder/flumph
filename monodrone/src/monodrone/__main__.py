@@ -8,7 +8,8 @@ from loguru import logger
 
 import duodrone
 from duodrone import config as duodrone_config
-from monodrone.interface.outer_event_handler import OuterEventHandler
+from monodrone.core.config import ASYNCIO_EVENT_LOOP
+from monodrone.core.outer_event_handler import OuterEventHandler
 from monodrone.ui.main_window import start_main_window
 
 
@@ -17,7 +18,6 @@ def start_background_loop(loop: asyncio.AbstractEventLoop) -> None:
     loop.run_forever()
 
 
-ASYNCIO_EVENT_LOOP = asyncio.new_event_loop()
 # ASYNCIO_EVENT_LOOP.set_debug(True)
 ASYNCIO_THREAD = Thread(target=start_background_loop, args=(ASYNCIO_EVENT_LOOP,), daemon=True,
                         name="DUODRONE_ASYNCIO_THREAD")
