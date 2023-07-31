@@ -1,5 +1,3 @@
-import asyncio
-
 from PySide6.QtCore import Qt, QTimer, QCoreApplication
 from PySide6.QtGui import QPixmap, QPainter, QPaintEvent, QBrush, QMouseEvent
 from PySide6.QtMultimedia import QAudioOutput, QMediaDevices, QMediaPlayer
@@ -8,7 +6,6 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 from loguru import logger
 
 import duodrone.query
-from monodrone.core.config import ASYNCIO_EVENT_LOOP
 from monodrone.core.outer_event_handler import OuterEventHandler
 from monodrone.ui.dialog_bubble import DialogBubble
 
@@ -59,7 +56,7 @@ class MainWindow(QMainWindow):
         painter.fillRect(0, 0, self.width(), self.height(), QBrush(backgnd))
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
-        asyncio.run_coroutine_threadsafe(duodrone.query.send('{"msg":"hi"}'), ASYNCIO_EVENT_LOOP)
+        duodrone.query.send('{"msg":"hi"}')
         # DialogBubble(self, "haha").show()
         # self.play_audio()
         # TODO 两图标渐变

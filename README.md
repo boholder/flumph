@@ -8,15 +8,6 @@
 curl -d "hi" http://127.0.0.1:1511/
 ```
 
-
-发现用httpx异步有点慢，试试下面这种实现和直接塞一个coroutine哪个快。
-
-如何实现quart和主动请求的兼容：
-用一个后台任务来跑监听并发送QT界面放入Queue的主动请求，收到请求放入响应Queue。
-https://stackoverflow.com/questions/70075859/scheduling-periodic-function-call-in-quart-asyncio
-https://pgjones.gitlab.io/quart/how_to_guides/startup_shutdown.html
-https://pgjones.gitlab.io/quart/how_to_guides/background_tasks.html
-
 ui，client，server三者的数据流动是怎样的？
 openai的流式响应api是什么网络原理？在当前架构的主动请求中能否实现？
 
@@ -72,3 +63,11 @@ https://github.com/openai/openai-python#async-api
 https://www.python-httpx.org/http2/
 
 把logger中依赖库的日志等级调高，改成自定义配置。
+
+~~发现用httpx异步有点慢，试试下面这种实现和直接塞一个coroutine哪个快。~~互联网慢而已
+
+如何实现quart和主动请求的兼容：
+用一个后台任务来跑监听并发送QT界面放入Queue的主动请求，收到请求放入响应Queue。
+https://stackoverflow.com/questions/70075859/scheduling-periodic-function-call-in-quart-asyncio
+https://pgjones.gitlab.io/quart/how_to_guides/startup_shutdown.html
+https://pgjones.gitlab.io/quart/how_to_guides/background_tasks.html

@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import httpx
@@ -11,7 +12,7 @@ openai.api_key = os.environ['OPENAI_KEY']
 duodrone_config = DuodroneConfig()
 
 
-async def send(text: str):
+async def a_send(text: str):
     logger.info(f'active post:{text}')
     # resp = await openai.ChatCompletion.acreate(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi!"}])
     async with httpx.AsyncClient() as client:
@@ -19,3 +20,7 @@ async def send(text: str):
         r = await client.post(url='https://httpbin.org/post', json=text)
         logger.info(f'active receive:{r}')
         duodrone_config.outer_event_handler(OuterEvent(r.text))
+
+
+def send(text: str):
+    asyncio.run_coroutine_threadsafe(a_send(text), duodrone_config.event_loop)
