@@ -25,8 +25,14 @@ class DuodroneLoggingConfig:
                    "<level>{message}</level>")
     """Source: https://github.com/Delgan/loguru/issues/586#issuecomment-1030819250"""
 
-    level: str = "WARNING"
-    """Control duodrone and its dependencies log level"""
+    duodrone_level: str = "WARNING"
+    """duodrone log level"""
+    quart_level: str = "WARNING"
+    """quart log level"""
+    hypercorn_level: str = "WARNING"
+    """hypercorn log level"""
+    httpx_level: str = "WARNING"
+    """httpx log level"""
 
 
 class LoguruInterceptHandler(logging.Handler):
@@ -104,7 +110,7 @@ class DuodroneConfig:
 
         if self.logger_config.use_default_loggers:
             logger_format = self.logger_config.format
-            log_level = self.logger_config.level
+            log_level = self.logger_config.duodrone_level
 
             # https://clig.dev/#the-basics
             # access logs (logger.bind(a=True).info(...)) to stdout

@@ -1,23 +1,26 @@
-import eventlet
-from eventlet import wsgi
-from flask import Flask, request, jsonify
+import asyncio
 
-app = Flask(__name__)
+import hypercorn.config
+from hypercorn.asyncio import serve as hypercorn_asyncio_serve
+from quart import Quart, request, jsonify
+
+app = Quart(__name__)
 
 
 @app.route('/', methods=['POST'])
-def slow_response():
-    t = request.get_data(as_text=True)
+async def slow_response():
+    t = await request.get_data(as_text=True)
     print(f'from http: {t}')
-    eventlet.sleep(5)
+    # await sleep(5)
     print('slow response')
-    return jsonify("from slow server: hi!")
+    return jsonify('{"from_slow_server": "' + t + '"}')
 
 
-def start_flask():
-    print("Starting Flask server...")
-    wsgi.server(eventlet.listen(('', 1415)), app)
+async def start_http_server():
+    c = hypercorn.config.Config()
+    c.bind = 'localhost:1512'
+    await hypercorn_asyncio_serve(app, c)
 
 
 if __name__ == '__main__':
-    start_flask()
+    asyncio.run(start_http_server())

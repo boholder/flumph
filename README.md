@@ -8,16 +8,9 @@
 curl -d "hi" http://127.0.0.1:1511/
 ```
 
+把logger中依赖库的日志等级调高，改成自定义配置。
 
-client的主动请求收发，如何与flask共处？（再加一个线程？）
-全部用asyncio，跑在主线程外另一个线程里。
-https://gist.github.com/boholder/fbc681b1cab464614ee1a7cf80412261
-flask换成`quart`，
-https://github.com/pallets/quart
-暂时用`openai`的依赖，
-https://github.com/openai/openai-python#async-api
-之后可替换成 `httpx[http2]`
-https://www.python-httpx.org/http2/
+发现用httpx异步有点慢，试试下面这种实现和直接塞一个coroutine哪个快。
 
 如何实现quart和主动请求的兼容：
 用一个后台任务来跑监听并发送QT界面放入Queue的主动请求，收到请求放入响应Queue。
@@ -28,9 +21,8 @@ https://pgjones.gitlab.io/quart/how_to_guides/background_tasks.html
 ui，client，server三者的数据流动是怎样的？
 openai的流式响应api是什么网络原理？在当前架构的主动请求中能否实现？
 
-------------------------------------------------------
+## 转正式开发------------------------------------------------------------------------------------------------------------
 
-转正式开发：
 - [ ] 配pre-commit，把这个加到IDE commit trigger里。
 - [ ] 配Github Action，测试和发版。
 - [ ] 加上 `CONTRIBUTING.md` 和 `SECURITY.md`
@@ -62,10 +54,20 @@ https://doc.qt.io/qt-6/audiooverview.html
 更好看的UI
 `QIcon.fromTheme`
 
-------------------------------------------------------
+## 已完成------------------------------------------------------
 
 1. 不规则窗口
 2. 窗口位置移动
 3. 外部HTTP请求触发窗口变化（schedule 轮询Queue，生成GUI事件）
 4. 经典的客户端主动请求服务端通信问题，是怎样解决I/O bound的？ non-blocking IO
 5. 方便创建新的窗口
+
+client的主动请求收发，如何与flask共处？（再加一个线程？）
+全部用asyncio，跑在主线程外另一个线程里。
+https://gist.github.com/boholder/fbc681b1cab464614ee1a7cf80412261
+flask换成`quart`，
+https://github.com/pallets/quart
+暂时用`openai`的依赖，
+https://github.com/openai/openai-python#async-api
+之后可替换成 `httpx[http2]`
+https://www.python-httpx.org/http2/

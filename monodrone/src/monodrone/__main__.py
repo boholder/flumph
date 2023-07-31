@@ -31,8 +31,8 @@ async def stop_async_http_server():
     ASYNCIO_EVENT_LOOP.call_soon(ASYNCIO_EVENT_LOOP.stop)
 
 
-def signal_handler(_, __):
-    logger.bind(o=True).info('Signal received, exiting...')
+def signal_handler(sig_num: int, __):
+    logger.bind(o=True).info(f'Signal [{signal.Signals(sig_num).name}] received, exiting...')
     asyncio.run_coroutine_threadsafe(stop_async_http_server(), ASYNCIO_EVENT_LOOP)
 
     # waiting for event loop closing
@@ -49,7 +49,10 @@ def signal_handler(_, __):
 
 def config_duodrone():
     duodrone_config.debug = True
-    duodrone_config.logger_config.level = 'DEBUG'
+    duodrone_config.logger_config.duodrone_level = 'DEBUG'
+    duodrone_config.logger_config.quart_level = 'INFO'
+    duodrone_config.logger_config.hypercorn_level = 'INFO'
+    duodrone_config.logger_config.httpx_level = 'INFO'
     duodrone_config.outer_event_handler = OuterEventHandler().handle
     duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait
     duodrone_config.event_loop = ASYNCIO_EVENT_LOOP

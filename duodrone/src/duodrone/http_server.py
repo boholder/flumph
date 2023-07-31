@@ -1,6 +1,7 @@
 import asyncio
 import threading
 from logging import getLogger
+from logging.config import dictConfig
 
 from hypercorn.asyncio import serve as hypercorn_asyncio_serve
 from loguru import logger
@@ -60,7 +61,25 @@ app = Quart(__name__)
 
 
 @app.before_serving
-async def remove_dependencies_log_handlers():
+async def config_loggers():
+    dictConfig({
+        'version': 1,
+        'loggers': {
+            'quart.app': {
+                'level': duodrone_config.logger_config.quart_level,
+            },
+            'quart.serving': {
+                'level': duodrone_config.logger_config.quart_level
+            },
+            'hypercorn.access': {
+                'level': duodrone_config.logger_config.quart_level
+            },
+            'hypercorn.error': {
+                'level': duodrone_config.logger_config.quart_level
+            }
+        },
+    })
+
     # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
     getLogger('quart.app').removeHandler(default_handler)
     getLogger('quart.serving').removeHandler(default_handler)
