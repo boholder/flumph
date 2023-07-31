@@ -1,15 +1,13 @@
 import asyncio
 import logging
 import sys
-from collections import namedtuple
 from typing import Callable, Optional, Awaitable
 
 from hypercorn.config import Config as HyperCornConfig
 from loguru import logger
+from quart.logging import default_handler as quart_logging_default_handler
 
 from duodrone.data import OuterEvent
-
-LoggingConfig = namedtuple('LoggingFormat', ['format', 'level'])
 
 
 class DuodroneLoggingConfig:
@@ -67,7 +65,7 @@ class DuodroneConfig:
 
     debug: bool = False
 
-    logger_config: DuodroneLoggingConfig = DuodroneLoggingConfig()
+    logging: DuodroneLoggingConfig = DuodroneLoggingConfig()
     """duodrone uses loguru library for logging: https://loguru.readthedocs.io"""
 
     outer_event_handler: Callable[[OuterEvent], None] = lambda self, resp: logger.info(f'Dummy get outer response: {resp}')
@@ -105,15 +103,38 @@ class DuodroneConfig:
         # remove default logging sink (stderr)
         logger.remove()
 
-        # add loguru intercept handler to dependencies' loggers
+        # add loguru intercept handler to dependencies' logging library loggers
         logging.basicConfig(handlers=[LoguruInterceptHandler()], level=0, force=True)
 
-        if self.logger_config.use_default_loggers:
-            logger_format = self.logger_config.format
-            log_level = self.logger_config.duodrone_level
+        # add default loggers
+        if self.logging.use_default_loggers:
+            logger_format = self.logging.format
+            log_level = self.logging.duodrone_level
 
             # https://clig.dev/#the-basics
             # access logs (logger.bind(a=True).info(...)) to stdout
             logger.add(sys.stdout, filter=lambda record: "o" in record["extra"], format=logger_format, level=log_level, enqueue=True)
             # other logs to stderr
             logger.add(sys.stderr, filter=lambda record: "o" not in record["extra"], format=logger_format, level=log_level, enqueue=True)
+
+
+duodrone_config = DuodroneConfig()
+
+
+async def config_dependencies_loggers_after_init():
+    # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
+    for _logger in {logging.getLogger('quart.app'), logging.getLogger('quart.serving')}:
+        _logger.setLevel(duodrone_config.logging.quart_level)
+        _logger.removeHandler(quart_logging_default_handler)
+
+    # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
+    # with reading the code of hypercorn.logging._create_logger
+    for _logger in {logging.getLogger('hypercorn.access'), logging.getLogger('hypercorn.error')}:
+        _logger.setLevel(duodrone_config.logging.hypercorn_level)
+        for handler in _logger.handlers:
+            if not isinstance(handler, LoguruInterceptHandler):
+                _logger.removeHandler(handler)
+
+    # https://www.python-httpx.org/logging/
+    for _logger in {logging.getLogger('httpx'), logging.getLogger('httpcore')}:
+        _logger.setLevel(duodrone_config.logging.httpx_level)

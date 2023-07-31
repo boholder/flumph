@@ -8,7 +8,6 @@
 curl -d "hi" http://127.0.0.1:1511/
 ```
 
-把logger中依赖库的日志等级调高，改成自定义配置。
 
 发现用httpx异步有点慢，试试下面这种实现和直接塞一个coroutine哪个快。
 
@@ -71,3 +70,5 @@ https://github.com/pallets/quart
 https://github.com/openai/openai-python#async-api
 之后可替换成 `httpx[http2]`
 https://www.python-httpx.org/http2/
+
+把logger中依赖库的日志等级调高，改成自定义配置。

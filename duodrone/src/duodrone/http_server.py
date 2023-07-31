@@ -1,14 +1,11 @@
 import asyncio
 import threading
-from logging import getLogger
 
 from hypercorn.asyncio import serve as hypercorn_asyncio_serve
 from loguru import logger
 from quart import Quart, request, jsonify
-from quart.logging import default_handler as quart_logging_default_handler
 
-from duodrone import config
-from duodrone.config import DuodroneConfig
+from duodrone.config import DuodroneConfig, config_dependencies_loggers_after_init
 from duodrone.data import OuterEvent
 
 SHUTDOWN_TRIGGER_ADVICE = '''Config `hypercorn_shutdown_trigger` must be set if you run the hypercorn in a non-main thread, or the http server won't start.
@@ -61,18 +58,7 @@ app = Quart(__name__)
 
 @app.before_serving
 async def config_loggers():
-    # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
-    for _logger in {getLogger('quart.app'), getLogger('quart.serving')}:
-        _logger.setLevel(duodrone_config.logger_config.quart_level)
-        _logger.removeHandler(quart_logging_default_handler)
-
-    # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
-    # with reading the code of hypercorn.logging._create_logger
-    for _logger in {getLogger('hypercorn.access'), getLogger('hypercorn.error')}:
-        _logger.setLevel(duodrone_config.logger_config.hypercorn_level)
-        for handler in _logger.handlers:
-            if not isinstance(handler, config.LoguruInterceptHandler):
-                _logger.removeHandler(handler)
+    await config_dependencies_loggers_after_init()
 
 
 @app.route('/', methods=['POST'])
