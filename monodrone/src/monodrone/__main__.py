@@ -50,9 +50,9 @@ def signal_handler(sig_num: int, __):
 def config_duodrone():
     duodrone_config.debug = True
     duodrone_config.logger_config.duodrone_level = 'DEBUG'
-    duodrone_config.logger_config.quart_level = 'INFO'
-    duodrone_config.logger_config.hypercorn_level = 'INFO'
-    duodrone_config.logger_config.httpx_level = 'INFO'
+    duodrone_config.logger_config.quart_level = 'DEBUG'
+    duodrone_config.logger_config.hypercorn_level = 'DEBUG'
+    duodrone_config.logger_config.httpx_level = 'DEBUG'
     duodrone_config.outer_event_handler = OuterEventHandler().handle
     duodrone_config.hypercorn_shutdown_trigger = SIGNAL_EVENT.wait
     duodrone_config.event_loop = ASYNCIO_EVENT_LOOP

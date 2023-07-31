@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
         painter.fillRect(0, 0, self.width(), self.height(), QBrush(backgnd))
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
-        asyncio.run_coroutine_threadsafe(duodrone.query.send('hi'), ASYNCIO_EVENT_LOOP)
+        asyncio.run_coroutine_threadsafe(duodrone.query.send('{"msg":"hi"}'), ASYNCIO_EVENT_LOOP)
         # DialogBubble(self, "haha").show()
         # self.play_audio()
         # TODO 两图标渐变

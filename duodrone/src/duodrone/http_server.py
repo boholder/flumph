@@ -1,12 +1,11 @@
 import asyncio
 import threading
 from logging import getLogger
-from logging.config import dictConfig
 
 from hypercorn.asyncio import serve as hypercorn_asyncio_serve
 from loguru import logger
 from quart import Quart, request, jsonify
-from quart.logging import default_handler
+from quart.logging import default_handler as quart_logging_default_handler
 
 from duodrone import config
 from duodrone.config import DuodroneConfig
@@ -62,31 +61,15 @@ app = Quart(__name__)
 
 @app.before_serving
 async def config_loggers():
-    dictConfig({
-        'version': 1,
-        'loggers': {
-            'quart.app': {
-                'level': duodrone_config.logger_config.quart_level,
-            },
-            'quart.serving': {
-                'level': duodrone_config.logger_config.quart_level
-            },
-            'hypercorn.access': {
-                'level': duodrone_config.logger_config.quart_level
-            },
-            'hypercorn.error': {
-                'level': duodrone_config.logger_config.quart_level
-            }
-        },
-    })
-
     # https://pgjones.gitlab.io/quart/how_to_guides/logging.html#disabling-removing-handlers
-    getLogger('quart.app').removeHandler(default_handler)
-    getLogger('quart.serving').removeHandler(default_handler)
+    for _logger in {getLogger('quart.app'), getLogger('quart.serving')}:
+        _logger.setLevel(duodrone_config.logger_config.quart_level)
+        _logger.removeHandler(quart_logging_default_handler)
 
     # https://pgjones.gitlab.io/hypercorn/how_to_guides/logging.html
     # with reading the code of hypercorn.logging._create_logger
     for _logger in {getLogger('hypercorn.access'), getLogger('hypercorn.error')}:
+        _logger.setLevel(duodrone_config.logger_config.hypercorn_level)
         for handler in _logger.handlers:
             if not isinstance(handler, config.LoguruInterceptHandler):
                 _logger.removeHandler(handler)
