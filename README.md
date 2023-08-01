@@ -8,8 +8,12 @@
 curl -d "hi" http://127.0.0.1:1511/
 ```
 
-ui，client，server三者的数据流动是怎样的？
+先实现对话框再实现流式。
+https://doc.qt.io/qt-6/model-view-programming.html#model-view-classes
+https://doc.qt.io/qt-6/qtquickcontrols-chattutorial-example.html#model
+
 openai的流式响应api是什么网络原理？在当前架构的主动请求中能否实现？
+https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_completions.ipynb
 
 ## 转正式开发------------------------------------------------------------------------------------------------------------
 
