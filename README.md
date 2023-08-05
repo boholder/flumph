@@ -20,7 +20,7 @@ https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_compl
 
 ## 转正式开发------------------------------------------------------------------------------------------------------------
 
-- [ ] 配pre-commit，把这个加到IDE commit trigger里。
+- [ ] 配pre-commit，把这个加到IDE commit trigger里。把radon 这个工具加进去，算cc https://github.com/yunojuno/pre-commit-xenon
 - [ ] 配Github Action，测试和发版。
 - [ ] 加上 `CONTRIBUTING.md` 和 `SECURITY.md`
 - [ ] 写个非常简单的README
