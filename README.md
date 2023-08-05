@@ -8,6 +8,9 @@
 curl -d "hi" http://127.0.0.1:1511/
 ```
 
+qt教程资源
+https://qtguide.ustclug.org/
+
 先实现对话框再实现流式。
 https://doc.qt.io/qt-6/model-view-programming.html#model-view-classes
 https://doc.qt.io/qt-6/qtquickcontrols-chattutorial-example.html#model
